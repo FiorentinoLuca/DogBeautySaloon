@@ -7,9 +7,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 
-public class DAO<T> {
+public class DAO<T extends Object> {
 	
 	protected EntityManagerFactory emf;
+	Class<T> entityClass;
 	
 	public void create(T entity)
 	{
@@ -28,13 +29,12 @@ public class DAO<T> {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public T read(int id)
 	{
 		EntityManager em = getEntityManager();
 		T entity = null;
 		try {
-			entity = (T) em.find(getClass(), id);
+			entity = (T) em.find(entityClass, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -65,8 +65,7 @@ public class DAO<T> {
 		EntityManager em = getEntityManager();
 		try {
 			em.getTransaction().begin();
-			@SuppressWarnings("unchecked")
-			T entity = (T) em.find(getClass(), id);
+			T entity = (T) em.find(entityClass, id);
 			if (entity != null) {
 				em.remove(entity);
 			}
@@ -85,11 +84,13 @@ public class DAO<T> {
 		return emf.createEntityManager();
 	}
 	
-	protected DAO(String persistenceUnitName) {
+	protected DAO(String persistenceUnitName, Class<T> entityClass) {
+		this.entityClass = entityClass;
 		this.emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 	}
 	
-	public DAO(String persistenceUnitName, Map<String, String> properties) {
+	public DAO(String persistenceUnitName, Map<String, String> properties, Class<T> entityClass) {
+		this.entityClass = entityClass;
 		this.emf = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
 	}
 	

@@ -8,10 +8,10 @@ import dogBeautySaloon.model.Pet;
 public class PetDAO extends DAO<Pet> {
 
 	public PetDAO() {
-		super("DogBeautySaloon");
+		super("DogBeautySaloon", Pet.class);
 	}
 	
-	public List<Pet> findAll() {
+	public List<Pet> readAll() {
 		EntityManager em = null;
 		List<Pet> pets = null;
 		try {
@@ -25,6 +25,6 @@ public class PetDAO extends DAO<Pet> {
 			}
 		}
 		return pets;
-	}	
+	}
 	
 }

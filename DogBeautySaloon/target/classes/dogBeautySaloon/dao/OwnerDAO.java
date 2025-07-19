@@ -9,7 +9,7 @@ import dogBeautySaloon.model.Pet;
 public class OwnerDAO extends DAO<Owner> {
 	
 	public OwnerDAO() {
-		super("DogBeautySaloon");
+		super("DogBeautySaloon", Owner.class);
 	}
 	
 	public Owner findByPet(Pet pet) {

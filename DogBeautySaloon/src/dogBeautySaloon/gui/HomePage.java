@@ -48,6 +48,7 @@ public class HomePage extends JFrame {
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setLocationRelativeTo(null); // Center the frame on the screen
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -69,13 +70,13 @@ public class HomePage extends JFrame {
 		panel.add(panel_1);
 		
 		JButton uploadDataButton = new JButton("Upload data");
-		Commands.UPLOAD_DATA.SubscribeToButton(uploadDataButton);
+		Commands.UPLOAD_DATA.subscribeToButton(uploadDataButton);
 		
 		JButton displayDataButton = new JButton("Display data");
-		Commands.DISPLAY_DATA.SubscribeToButton(displayDataButton);
+		Commands.DISPLAY_DATA.subscribeToButton(displayDataButton);
 		
 		JButton exitButton = new JButton("Exit");
-		Commands.EXIT.SubscribeToButton(exitButton);
+		Commands.EXIT.subscribeToButton(exitButton);
 
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(

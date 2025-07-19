@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import dogBeautySaloon.Controller;
@@ -34,6 +35,7 @@ public class DataUploader extends JFrame {
 	private JTextArea txtrObsNRelevant;
 	private JComboBox<?> cmbSpecialTreatment;
 	private JComboBox<?> cmbAlergeens;
+	public Integer id = null;
 
 	/**
 	 * Launch the application.
@@ -46,13 +48,12 @@ public class DataUploader extends JFrame {
 						
 						if (Controller.dataUploader == null) 
 							Controller.dataUploader = new DataUploader();
-						
+						var lastFrame = Controller.lastFrameOnFocus();
+						if (lastFrame != null) 
+							Controller.dataUploader.setLocationRelativeTo(lastFrame);
 						Controller.dataUploader.setVisible(true);
-						
-						if (Controller.homePage != null) {
-							Controller.dataUploader.setLocationRelativeTo(Controller.homePage);
-							Controller.homePage.setVisible(false);
-						}
+						if (lastFrame != null) 
+							lastFrame.setVisible(false);
 						
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -75,10 +76,10 @@ public class DataUploader extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDataUpload = new JLabel("Data Upload");
-		lblDataUpload.setBounds(96, 10, 262, 58);
-		lblDataUpload.setFont(new Font("Tahoma", Font.PLAIN, 48));
-		contentPane.add(lblDataUpload);
+		lblTitle = new JLabel("Data Upload");
+		lblTitle.setBounds(96, 10, 262, 58);
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 48));
+		contentPane.add(lblTitle);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(61, 78, 351, 380);
@@ -172,10 +173,10 @@ public class DataUploader extends JFrame {
 		cmbSpecialTreatment.setBounds(123, 197, 218, 21);
 		panel.add(cmbSpecialTreatment);
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.setBounds(0, 357, 85, 21);
 		panel.add(btnSave);
-		Commands.SAVE.SubscribeToButton(btnSave);
+		Commands.SAVE.subscribeToButton(btnSave);
 		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -194,6 +195,24 @@ public class DataUploader extends JFrame {
 		btnClear.setHorizontalTextPosition(SwingConstants.LEFT);
 		btnClear.setBounds(232, 357, 109, 21);
 		panel.add(btnClear);
+	}
+	
+	public DataUploader(JTable table) {
+		this(); // Call the default constructor to initialize the frame
+		this.id = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+		textName.setText((String) table.getValueAt(table.getSelectedRow(), 1));
+		textBreed.setText((String) table.getValueAt(table.getSelectedRow(), 2));
+		textColor.setText((String) table.getValueAt(table.getSelectedRow(), 3));
+		textOwner.setText((String) table.getValueAt(table.getSelectedRow(), 4));
+		textPhoneNumber.setText((String) table.getValueAt(table.getSelectedRow(), 5));
+		cmbAlergeens.setSelectedItem((String) table.getValueAt(table.getSelectedRow(), 6));
+		cmbSpecialTreatment.setSelectedItem((String) table.getValueAt(table.getSelectedRow(), 7));
+		txtrObsNRelevant.setText((String) table.getValueAt(table.getSelectedRow(), 8));
+		
+		lblTitle.setText("Update");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		Commands.SAVE.unsubscribeFromButton(btnSave);
+		Commands.EDIT.subscribeToButton(btnSave);
 	}
 	
 	public class Data {
@@ -221,10 +240,14 @@ public class DataUploader extends JFrame {
 		
 	}
 	
-	private static final String className = "/DogBeautySaloon/src/dogBeautySaloon/gui/DataUploader.java";	
+	
+	private static final String className = "/DogBeautySaloon/src/dogBeautySaloon/gui/DataUploader.java";
+	private JButton btnSave;
+	public JLabel lblTitle;
 	public enum Commands implements Controller.Commands {
 		
 		SAVE(className + ": SaveButton"),
+		EDIT(className + ": EditButton"),
 		CLEAR(className + ": ClearButton"),
 		EXIT(className + ": ExitButton");
 		
