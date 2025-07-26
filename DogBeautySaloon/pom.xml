@@ -4,6 +4,10 @@
   <artifactId>DogBeautySaloon</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Dog Beauty Saloon</name>
+  <properties>
+  	<maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+  </properties>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -22,8 +26,32 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <release>22</release>
+          <release>21</release>
         </configuration>
+      </plugin>
+      
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-assembly-plugin</artifactId>
+      	
+      	<executions>
+      		<execution>
+      			<phase>package</phase>
+      			<goals>
+      				<goal>single</goal>
+  				</goals>
+  				<configuration>
+  					<archive>
+  						<manifest>
+  							<mainClass>dogBeautySaloon.Controller</mainClass>
+  						</manifest>
+					</archive>
+  					<descriptorRefs>
+  						<descriptorRef>jar-with-dependencies</descriptorRef>
+  					</descriptorRefs>
+  				</configuration>
+      		</execution>
+      	</executions>
       </plugin>
     </plugins>
   </build>
